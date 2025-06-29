@@ -1,0 +1,25 @@
+/* Essential base styles */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Layout */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-layout .content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Auth Layout */
+.auth-layout {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
