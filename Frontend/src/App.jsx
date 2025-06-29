@@ -1,24 +1,27 @@
-// src/App.jsx
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import LandingPage from './pages/LandingPage';
+import MainLayout from './layouts/MainLayout';
+import AuthLayout from './layouts/AuthLayout';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AboutUs from './pages/AboutUs';
-import Login from './pages/Login';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
+      <Routes>
+        {/* Login page with AuthLayout */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
+
+        {/* All other pages with MainLayout */}
+        <Route element={<MainLayout />}>
+          <Route index element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<AboutUs />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </Router>
   );
 }
