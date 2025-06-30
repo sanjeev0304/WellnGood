@@ -8,11 +8,11 @@ const userData = async (req, res) => {
     const uid = req.user.uid;
     const user = await User.findOne({uid});
         if(!user){
-            res.status(404).json({"Message":"User Not Found"});
+            return res.status(404).json({"Message":"User Not Found"});
         }
         const today = user.history.at(-1);
-        const avg = getThreeMonthAverages(user.history);
-        res.status(200).json({
+        const avg =  getThreeMonthAverages(user.history);
+        return res.status(200).json({
             today,
             avg,
             "Name" : user.name,
@@ -20,7 +20,7 @@ const userData = async (req, res) => {
     });
 
     } catch (error) {
-        res.status(500).json({"Message":"Internal Server Error"});
+        return res.status(500).json({"Message":"Internal Server Error"});
     }
 }
 module.exports = userData;

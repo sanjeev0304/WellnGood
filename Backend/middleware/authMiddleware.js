@@ -1,10 +1,9 @@
-const admin = require('firebase-admin');
+
 const axios = require('axios');
-
-
+const admin = require('../utils/firebase');
 const verifyToken = async (req, res, next) => {
-    let idToken = req.cookies.accessToken;
-    const refreshToken = req.cookies.refreshToken;
+    let idToken = req.cookies.AccessToken;
+    const refreshToken = req.cookies.RefreshToken;
     
     try{
         const decoded = await admin.auth().verifyIdToken(idToken);
@@ -33,7 +32,7 @@ const verifyToken = async (req, res, next) => {
               let newToken = response.data.id_token;
               const decoded = await admin.auth().verifyIdToken(newToken);
       
-              res.cookie("accessToken", newToken, {
+              res.cookie("AccessToken", newToken, {
                   httpOnly: true,
                   sameSite: "Strict",
                   maxAge: 3600 * 1000 
