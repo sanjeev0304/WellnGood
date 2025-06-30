@@ -2,9 +2,12 @@ const express = require('express');
 
 const User = require('../model/User');
 
+const generateInitialData = require('../utils/generateInitialData');
+const generateNextDayData = require('../utils/generateNextDayData');
+const getThreeMonthAverages = require('../utils/getThreeMonthAverages');
 
 const googleLogin = async (req, res) => {
-    const { uid, name, email, token } = req.body;
+    const { uid, name, email, accessToken, refreshToken } = req.body;
 
     try {
         let user = await User.findOne({ uid });
@@ -38,14 +41,14 @@ const googleLogin = async (req, res) => {
         const today = user.history.at(-1);
         const avg = getThreeMonthAverages(user.history);
 
-        res.cookie("JWT", token,{
+        res.cookie("AccessToken", accessToken,{
             httpOnly : true,
             sameSite: "Strict",
             maxAge: 3600 * 1000
 
         });
 
-        res.cookie("Refresh Token", refreshToken, {
+        res.cookie("RefreshToken", refreshToken, {
             httpOnly : true,
             sameSite: "Strict",
             maxAge: 7 * 24 * 60 * 60 * 1000
@@ -66,4 +69,4 @@ const googleLogin = async (req, res) => {
     }
 }
 
-export default googleLogin;
+module.exports = googleLogin;
