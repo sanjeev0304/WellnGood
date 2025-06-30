@@ -2,9 +2,7 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import googleIcon from '../assets/google-icon.svg';
-
-
-
+import signInGoogle from '../auth/signInGoogle';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,14 +30,16 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <div className={styles.socialContainer}>
-              <button type="button" className={styles.googleButton}>
+              <button
+                type="button"
+                className={styles.googleButton}
+                onClick={() => signInGoogle(navigate)}
+              >
                 <img src={googleIcon} alt="Google" className={styles.googleIcon} />
                 Sign up with Google
               </button>
-
             </div>
-            <span>or </span>
-
+            <span>or</span>
             <input type="text" placeholder="Name" required />
             <input type="email" placeholder="Email" required />
             <input type="password" placeholder="Password" required />
@@ -52,20 +52,19 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <h1>Sign in</h1>
             <div className={styles.socialContainer}>
-              <button type="button" className={styles.googleButton}>
+              <button
+                type="button"
+                className={styles.googleButton}
+                onClick={() => signInGoogle(navigate)}
+              >
                 <img src={googleIcon} alt="Google" className={styles.googleIcon} />
                 Sign in with Google
               </button>
-
-
-
-
             </div>
             <span>or use your account</span>
             <input type="email" placeholder="Email" required />
             <input type="password" placeholder="Password" required />
             <a href="#" className={styles.forgot}>Forgot your password?</a>
-
             <button type="submit">Sign In</button>
           </form>
         </div>
@@ -85,6 +84,7 @@ const Login = () => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
