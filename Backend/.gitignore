@@ -15,4 +15,4 @@ build/
 # Lock files (optional if you want clean installs only)
 package-lock.json
 yarn.lock
-Backend/*firebase-adminsdk-*.json
+*.json
