@@ -1,0 +1,10 @@
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.chart-container {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+}
