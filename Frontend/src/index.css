@@ -164,6 +164,7 @@ body {
 /* Dashboard Styles */
 .dashboard {
   padding: 4rem 0;
+  background-color: #fffbe6;
 }
 
 .dashboard-grid {
