@@ -1,0 +1,87 @@
+.hero {
+  background: linear-gradient(135deg, #8edc63, #34a853);
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+}
+
+.hero::before {
+  width: 400px;
+  height: 400px;
+  background: #fff;
+  top: -100px;
+  left: -100px;
+}
+
+.hero::after {
+  width: 300px;
+  height: 300px;
+  background: #eb6a2a;
+  bottom: -150px;
+  right: -150px;
+}
+
+.hero h1 {
+  font-size: 54px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 22px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.btn {
+  padding: 14px 36px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn.primary {
+  background-color: #fff;
+  color: #34a853;
+}
+
+.btn.primary:hover {
+  background-color: #eb6a2a;
+  color: #fff;
+  transform: translateY(-4px);
+}
+
+.btn.secondary {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.btn.secondary:hover {
+  background-color: #fff;
+  color: #34a853;
+  transform: translateY(-4px);
+}
