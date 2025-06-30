@@ -59,8 +59,8 @@ const googleLogin = async (req, res) => {
             "Message" : "Login Sucessful",
             "Name" : user.name,
             "Email" : user.email,
-            today,
-            threeMonthAvg : avg
+            threeMonthAvg : avg,
+            today
         });
     }
     catch (error) {

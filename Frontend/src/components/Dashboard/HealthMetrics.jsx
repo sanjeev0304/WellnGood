@@ -8,22 +8,19 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import "./HealthMetrics.css";
-const HealthMetrics = ({ data, timePeriod }) => {
-  const getChartData = () => {
-    if (timePeriod === '1day') return null;
+import './HealthMetrics.css';
 
-    const days = timePeriod === '1month' ? 30 : 90;
-    return Array.from({ length: days }, (_, i) => ({
-      day: i + 1,
-      steps: Math.floor(Math.random() * 5000) + 5000,
-      heartRate: Math.floor(Math.random() * 20) + 60,
-      sleep: (Math.random() * 2 + 6).toFixed(1),
-      calories: Math.floor(Math.random() * 400) + 1600
-    }));
-  };
-
-  const chartData = getChartData();
+const HealthMetrics = ({ data, timePeriod, history }) => {
+  const chartData =
+    timePeriod === '3months'
+      ? history.map((entry, index) => ({
+          day: `Day ${index + 1}`,
+          steps: entry.steps,
+          heartRate: entry.heartRate,
+          sleep: entry.sleepHours,
+          calories: entry.calories
+        }))
+      : null;
 
   return (
     <div className="metrics-card">
@@ -34,7 +31,6 @@ const HealthMetrics = ({ data, timePeriod }) => {
           <div className="metric">
             <h4>Steps</h4>
             <p>{data.steps.toLocaleString()}</p>
-            <small>Recorded at: {new Date(data.timestamp).toLocaleTimeString()}</small>
           </div>
           <div className="metric">
             <h4>Heart Rate</h4>
@@ -42,11 +38,11 @@ const HealthMetrics = ({ data, timePeriod }) => {
           </div>
           <div className="metric">
             <h4>Sleep</h4>
-            <p>{data.sleep} hours</p>
+            <p>{data.sleepHours} hours</p>
           </div>
           <div className="metric">
             <h4>Calories</h4>
-            <p>{data.calories || (Math.floor(Math.random() * 400) + 1600)} kcal</p>
+            <p>{data.calories} kcal</p>
           </div>
         </div>
       ) : (
