@@ -26,7 +26,14 @@ const signInGoogle = async (navigate) => {
 
 
         console.log(response.data);
-        navigate('/dashboard')
+        navigate('/dashboard', {
+            state: {
+                name: response.data.Name,
+                email: response.data.Email,
+                today: response.data.today,
+                threeMonthAvg: response.data.threeMonthAvg
+            }
+        });
 
     } catch (error) {
         console.error("Error with google login", error);

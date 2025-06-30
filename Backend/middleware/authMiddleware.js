@@ -13,9 +13,7 @@ const verifyToken = async (req, res, next) => {
 
     }
     catch (error){
-        res.status(401).json({
-            "Message" : "Unauthorized, Invalid token"
-        });
+        console.error("Invalid Token")
     }
 
     if(refreshToken){
@@ -35,7 +33,7 @@ const verifyToken = async (req, res, next) => {
               let newToken = response.data.id_token;
               const decoded = await admin.auth().verifyIdToken(newToken);
       
-              res.cookie("AccessToken", newToken, {
+              res.cookie("accessToken", newToken, {
                   httpOnly: true,
                   sameSite: "Strict",
                   maxAge: 3600 * 1000 
