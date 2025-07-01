@@ -6,21 +6,34 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Cell,
   ResponsiveContainer
 } from 'recharts';
 import './HealthMetrics.css';
 
-const HealthMetrics = ({ data, timePeriod, history }) => {
-  const chartData =
-    timePeriod === '3months'
-      ? history.map((entry, index) => ({
-          day: `Day ${index + 1}`,
-          steps: entry.steps,
-          heartRate: entry.heartRate,
-          sleep: entry.sleepHours,
-          calories: entry.calories
-        }))
-      : null;
+const HealthMetrics = ({ data, timePeriod }) => {
+  const avgChartData = [
+    {
+      metric: 'Steps',
+      value: data.steps,
+      color: '#eb6a2a'
+    },
+    {
+      metric: 'Heart Rate',
+      value: data.heartRate,
+      color: '#8edc63'
+    },
+    {
+      metric: 'Calories',
+      value: data.calories,
+      color: '#f2a900'
+    },
+    {
+      metric: 'Sleep Hours',
+      value: data.sleepHours,
+      color: '#9e7bff'
+    }
+  ];
 
   return (
     <div className="metrics-card">
@@ -46,58 +59,23 @@ const HealthMetrics = ({ data, timePeriod, history }) => {
           </div>
         </div>
       ) : (
-        <div className="charts-grid">
-          <div className="chart-container">
-            <h4 style={{ color: '#eb6a2a' }}>Steps Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="steps" fill="#eb6a2a" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-container">
-            <h4 style={{ color: '#8edc63' }}>Heart Rate Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="heartRate" fill="#8edc63" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-container">
-            <h4 style={{ color: '#f2a900' }}>Calories Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="calories" fill="#f2a900" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-container">
-            <h4 style={{ color: '#9e7bff' }}>Sleep Over Time</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="sleep" fill="#9e7bff" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="chart-container">
+          <h4 style={{ color: '#eb6a2a' }}>3-Month Average Metrics</h4>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={avgChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="metric" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#8884d8">
+                {
+                  avgChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))
+                }
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       )}
     </div>

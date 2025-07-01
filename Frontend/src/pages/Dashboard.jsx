@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import HealthMetrics from '../components/Dashboard/HealthMetrics';
 import RiskIndicator from '../components/Dashboard/RiskIndicator';
 import PremiumCalculator from '../components/Dashboard/PremiumCalculator';
+import api from '../api'
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -14,7 +14,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('/api/user/data', { withCredentials: true });
+        const res = await api.get('/api/user/data');
         setToday(res.data.today);
         setThreeMonthAvg(res.data.avg);
         setHistory(res.data.history);

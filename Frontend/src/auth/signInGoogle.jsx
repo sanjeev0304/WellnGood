@@ -1,6 +1,6 @@
 import { signInWithPopup, getAuth, GoogleAuthProvider } from "firebase/auth";
-import { auth, provider } from "../firebase/config"
-import axios from "axios";
+import { auth, provider } from "../firebase/config";
+import api from '../api';
 
 const signInGoogle = async (navigate) => {
     try {
@@ -9,7 +9,7 @@ const signInGoogle = async (navigate) => {
         const accessToken = await user.getIdToken();
         const refreshToken = user.refreshToken;
 
-        const response = await axios.post('/api/auth/google', {
+        const response = await api.post('/api/auth/google', {
             uid: user.uid,
             name: user.displayName,
             email: user.email,
