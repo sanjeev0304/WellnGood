@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-// src/components/LandingPage/HeroSection.js
-import React from 'react';
-import "./HeroSection.css";
-=======
-// HeroSection.jsx
-
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HeroSection.css';
 
->>>>>>> 24cea7e (Updated LandingPage and AboutUs)
 const HeroSection = () => {
   const navigate = useNavigate();
   const nextSectionRef = useRef(null);

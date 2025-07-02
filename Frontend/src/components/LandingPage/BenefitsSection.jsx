@@ -55,4 +55,8 @@ const BenefitsSection = () => {
   );
 };
 
+
 export default BenefitsSection;
+
+export default BenefitsSection;
+
