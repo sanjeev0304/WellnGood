@@ -1,9 +1,6 @@
-
-
-
 // src/components/LandingPage/FeatureCard.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FeatureCard.css';
 
 const slides = [
@@ -36,7 +33,14 @@ const SlideShow = () => {
     setCurrent(index);
   };
 
+  // Auto-change slides every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 3000); // Change duration here (in milliseconds)
 
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   return (
     <div className="slideshow">
@@ -61,4 +65,3 @@ const SlideShow = () => {
 };
 
 export default SlideShow;
-

@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <div className="landing-page">
       <HeroSection />
-
+      <SlideShow />
       <BenefitsSection />
 
       <AboutUs />

@@ -74,10 +74,10 @@ const login = async (req, res) => {
 
 const signUp = async (req, res) => {
     const { name, email, password } = req.body; 
-    console.log(req.body);
+
     try {
         const isUserPresent = await User.findOne({ email });
-        console.log(isUserPresent);
+
         if (isUserPresent) {
             return res.status(400).json({
                 "Message": "User already present please login"
@@ -150,13 +150,36 @@ const logout = async (req, res) => {
 }
 
 const loginStatus = async (req, res) => {
-    return res.status(200).json({
+    try {
+      if (!req.user) {
+        return res.status(401).json({
+          status: 401,
+          isLoggedIn: false,
+          message: "User not authenticated",
+        });
+      }
+  
+      const { name, picture } = req.user;
+      return res.status(200).json({
         status: 200,
         isLoggedIn: true,
-        message: "Status: Logged in Successfully"
+        user: {
+          name: name || '',
+          photo: picture || null,
+        },
+        message: "Status: Logged in Successfully",
       });
-}
-
+    } 
+    catch (error) {
+      console.error("Login status error:", error);
+      return res.status(500).json({
+        status: 500,
+        isLoggedIn: false,
+        message: "Internal server error",
+      });
+    }
+  };
+  
 const refreshTokenGenerator = async (req, res) => {
     const token = req.cookies.RefreshToken;
 

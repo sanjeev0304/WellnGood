@@ -7,7 +7,7 @@ const generateNextDayData = require('../utils/generateNextDayData');
 const getThreeMonthAverages = require('../utils/getThreeMonthAverages');
 
 const googleLogin = async (req, res) => {
-    const { uid, name, email, accessToken, refreshToken } = req.body;
+    const { uid, name, email, photoURL, accessToken, refreshToken } = req.body;
 
     try {
         let user = await User.findOne({ uid });
@@ -18,6 +18,7 @@ const googleLogin = async (req, res) => {
                 uid,
                 email,
                 name,
+                photoURL,
                 joinedOn: new Date().toISOString(),
                 lastUpdated: new Date().toISOString(),
                 history: [newData]

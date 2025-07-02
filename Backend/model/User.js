@@ -42,6 +42,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: null 
   },
+  photoURL: {                  
+    type: String,
+    default: null
+  },
   refreshToken: {
     type: String,
     default: null

@@ -8,11 +8,12 @@ const signInGoogle = async (navigate) => {
         const user = result.user;
         const accessToken = await user.getIdToken();
         const refreshToken = user.refreshToken;
-
+        console.log(user);
         const response = await api.post('/api/auth/google', {
             uid: user.uid,
             name: user.displayName,
             email: user.email,
+            photoURL : user.photoURL,
             accessToken,
             refreshToken
         },
