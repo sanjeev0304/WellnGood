@@ -1,3 +1,8 @@
+
+
+
+// src/components/LandingPage/FeatureCard.js
+
 import React, { useState } from 'react';
 import './FeatureCard.css';
 
@@ -31,6 +36,8 @@ const SlideShow = () => {
     setCurrent(index);
   };
 
+
+
   return (
     <div className="slideshow">
       <div className="slide" style={{ backgroundImage: `url(${slides[current].image})` }}>
@@ -54,3 +61,4 @@ const SlideShow = () => {
 };
 
 export default SlideShow;
+
