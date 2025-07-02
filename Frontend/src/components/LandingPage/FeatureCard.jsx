@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-// src/components/LandingPage/FeatureCard.js
-import React from 'react';
-import "./FeatureCard.css";
-const FeatureCard = ({ title, description }) => {
-=======
 import React, { useState } from 'react';
 import './FeatureCard.css';
 
@@ -37,7 +31,6 @@ const SlideShow = () => {
     setCurrent(index);
   };
 
->>>>>>> 24cea7e (Updated LandingPage and AboutUs)
   return (
     <div className="slideshow">
       <div className="slide" style={{ backgroundImage: `url(${slides[current].image})` }}>
