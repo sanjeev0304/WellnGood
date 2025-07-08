@@ -20,7 +20,16 @@ const HealthSchema = new mongoose.Schema({
   calories: {
     type: Number,
     default: 0
+  },
+  bloodOxygen: {
+    type: Number,
+    default: 0
+  },
+  distance: {
+    type: Number,
+    default: 0
   }
+
 }, { _id: false });
 
 

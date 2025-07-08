@@ -17,10 +17,8 @@ const verifyToken = async (req, res, next) => {
   const accessToken = req.cookies.AccessToken;
   const refreshToken = req.cookies.RefreshToken;
 
-
   if (accessToken) {
     if (isFirebaseToken(accessToken)) {
-
       try {
         const decodedFirebase = await admin.auth().verifyIdToken(accessToken);
         req.user = decodedFirebase;
@@ -29,7 +27,6 @@ const verifyToken = async (req, res, next) => {
         console.warn("Firebase token invalid:", err.message);
       }
     } else {
-
       try {
         const decodedJWT = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, {
           algorithms: ["HS256"]
@@ -42,8 +39,8 @@ const verifyToken = async (req, res, next) => {
     }
   }
 
-
-  if (refreshToken) {
+  // ✅ Only proceed with manual refresh if it's NOT a Firebase token
+  if (refreshToken && !isFirebaseToken(refreshToken)) {
     try {
       const decodedRefresh = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, {
         algorithms: ["HS256"]
@@ -68,7 +65,7 @@ const verifyToken = async (req, res, next) => {
     }
   }
 
-  // --- Firebase Refresh Flow ---
+  // Firebase refresh flow (optional)
   if (refreshToken && isFirebaseToken(refreshToken)) {
     try {
       const response = await axios.post(

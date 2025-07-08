@@ -57,6 +57,15 @@ const HealthMetrics = ({ data, timePeriod }) => {
             <h4>Calories</h4>
             <p>{data.calories} kcal</p>
           </div>
+          <div className="metric">
+            <h4>Saturation</h4>
+            <p>{data.bloodOxygen} %</p>
+          </div>
+          <div className="metric">
+            <h4>Distance</h4>
+            <p>{data.distance} m</p>
+          </div>
+
         </div>
       ) : (
         <div className="chart-container">

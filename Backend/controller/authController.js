@@ -4,10 +4,25 @@ const generateInitialData = require('../utils/generateInitialData');
 const generateNextDayData = require('../utils/generateNextDayData');
 const getThreeMonthAverages = require('../utils/getThreeMonthAverages');
 const {generateAccessToken, generateRefreshToken} = require('../utils/generateTokens');
-
-
+const axios = require('axios');
 const bcrypt = require('bcryptjs');
 
+const predict = async(req, res) => {
+
+   const user = await User.findOne({email});
+
+    const response = await axios.post('http://127.0.0.1:5000/api/predict',{
+        Heart_Rate,
+        Blood_Oxygen_Level,
+        Sleep_Duration,
+        Steps,
+        Calories_Burned,
+        Distance_Covered
+    });
+    console.log(response);
+    return response;
+
+}
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -100,8 +115,19 @@ const signUp = async (req, res) => {
 
         await newUser.save();
 
-        const avg = getThreeMonthAverages(newUser.history);
         const today = newUser.history.at(-1);
+        const avg = getThreeMonthAverages(newUser.history);
+
+        const clusterResponse = await axios.post('http://127.0.0.1:5000/api/predict',{
+            "Heart_Rate": today.heartRate,
+            "Blood_Oxygen_Level": today.bloodOxygen,
+            "Sleep_Duration": today.sleepHours,
+            "Steps": today.steps,
+            "Calories_Burned": today.calories,
+            "Distance_Covered": today.distance
+        });
+
+        const Cluster = clusterResponse.data.cluster
 
         res.cookie("AccessToken", accessToken, {
             httpOnly: true,
@@ -121,7 +147,8 @@ const signUp = async (req, res) => {
             "Name": newUser.name,
             "Email": newUser.email,
             threeMonthAvg: avg,
-            today
+            today,
+            Cluster
 
         });
     }
