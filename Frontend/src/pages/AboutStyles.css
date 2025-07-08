@@ -98,39 +98,6 @@
   margin-bottom: 0.5rem;         /* Optional: spacing between items */
 }
 
-/* Tech Stack */
-.tech-section {
-  background: rgba(26, 26, 25, 0.7);
-  padding: 30px;
-  border-radius: 12px;
-}
-
-.tech-section h2 {
-  color: #859F3D;
-  margin-bottom: 1rem;
-}
-
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 15px;
-}
-
-.tech-item {
-  background: rgba(133, 159, 61, 0.1);
-  border: 1px solid rgba(133, 159, 61, 0.3);
-  text-align: center;
-  padding: 10px;
-  border-radius: 8px;
-  color: #f6fcdf;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.tech-item:hover {
-  background: rgba(133, 159, 61, 0.25);
-  transform: translateY(-3px);
-}
 
 /* Team Section */
 .team-section {
@@ -160,7 +127,7 @@
   align-items: center;
   background: rgba(40, 40, 38, 0.6);
   border-radius: 15px;
-  padding: 20px;
+  padding: 27px;
   transition: 0.3s;
   text-align: center;
 }

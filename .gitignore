@@ -1,1 +1,19 @@
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+dist/
+build/
+
+# System/IDE files
+.DS_Store
+.vscode/
+.idea/
+
+# Lock files (optional if you want clean installs only)
+package-lock.json
+yarn.lock
+
 Backend/tech-fe1e1-firebase-adminsdk-fbsvc-9a001fd810.json
