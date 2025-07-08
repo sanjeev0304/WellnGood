@@ -7,20 +7,16 @@ const HeroSection = () => {
   const navigate = useNavigate();
   const nextSectionRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true); // loading guard
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const res = await api.post('/api/auth/loginStatus', {}, { withCredentials: true });
-        if (res.data?.isLoggedIn) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-        }
+        setIsLoggedIn(!!res.data?.isLoggedIn);
       } catch (err) {
         console.error("Status check error:", err);
-        setIsLoggedIn(false); // fallback in case of error
+        setIsLoggedIn(false);
       } finally {
         setLoading(false);
       }
@@ -36,7 +32,7 @@ const HeroSection = () => {
   return (
     <>
       <section className="hero">
-        <div className="container">
+        <div className="hero-box">
           <div className="hero-content">
             <h1>Well&Good</h1>
             <p>Life insurance that rewards healthy living</p>
