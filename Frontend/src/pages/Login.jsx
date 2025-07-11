@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import googleIcon from '../assets/google-icon.svg';
 import signInGoogle from '../auth/signInGoogle';
-import api from '../api'; 
+import api from '../api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -58,7 +58,8 @@ const Login = () => {
                 Sign up with Google
               </button>
             </div>
-            <span>or</span>
+            <span className={styles.orText}>or</span>
+
             <input
               type="text"
               placeholder="Name"
@@ -98,7 +99,7 @@ const Login = () => {
                 Sign in with Google
               </button>
             </div>
-            <span>or use your account</span>
+            <span className={styles.orText}>or use your account</span>
             <input
               type="email"
               placeholder="Email"
