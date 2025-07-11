@@ -1,7 +1,7 @@
 const express = require('express');
 
 const User = require('../model/User');
-
+const axios = require('axios');
 const generateInitialData = require('../utils/generateInitialData');
 const generateNextDayData = require('../utils/generateNextDayData');
 const getThreeMonthAverages = require('../utils/getThreeMonthAverages');
@@ -26,20 +26,37 @@ const googleLogin = async (req, res) => {
 
             await user.save();
         }
-        else {
+        const today = user.history.at(-1);
+        const exisitingCluster = user.cluster;
+        if(!exisitingCluster){
+            const clusterResponse = await axios.post('http://127.0.0.1:5000/api/predict',{
+                "Heart_Rate": today.heartRate,
+                "Blood_Oxygen_Level": today.bloodOxygen,
+                "Sleep_Duration": today.sleepHours,
+                "Steps": today.steps,
+                "Calories_Burned": today.calories,
+                "Distance_Covered": today.distance
+            });
+    
+            const Cluster = clusterResponse.data.predicted_cluster
+
+            user.cluster = Cluster;
+            await user.save();
+        }
+
             const current = new Date();
             const last = new Date(user.lastUpdated);
             let diff = current - last;
             if (diff > 24 * 60 * 60 * 1000) {
-                const updatedData = generateNextDayData(user.history.at(-1)) //returns the most recent data
+                const updatedData = generateNextDayData(user.history.at(-1)) 
                 user.history.push(updatedData);
                 user.lastUpdated = current.toISOString();
                 await user.save();
             }
 
-        }
+        
 
-        const today = user.history.at(-1);
+   
         const avg = getThreeMonthAverages(user.history);
 
         res.cookie("AccessToken", accessToken,{
@@ -60,6 +77,7 @@ const googleLogin = async (req, res) => {
             "Message" : "Login Sucessful",
             "Name" : user.name,
             "Email" : user.email,
+            "Cluster" : user.cluster,
             threeMonthAvg : avg,
             today
         });

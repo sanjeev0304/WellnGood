@@ -1,16 +1,46 @@
 import React from 'react';
-
-function RiskIndicator({ riskLevel }) {
-  const getRiskColor = () => {
-    const level = riskLevel.toLowerCase();
-
-    if (level === 'low') return '#00c853';      // Green
-    if (level === 'medium') return '#ffeb3b';   // Yellow
-    if (level === 'high') return '#d50000';     // Red
+import api from '../../api';
+import { useState, useEffect } from 'react';
+function RiskIndicator() {
+  const getRiskColor = (riskConditon) => {
+   
+    console.log(riskConditon);
+    if (riskConditon === 'low') return '#00c853';      // Green
+    if (riskConditon === 'medium') return '#ffeb3b';   // Yellow
+    if (riskConditon === 'high') return '#d50000';     // Red
     return '#9e9e9e';                           // Default gray
   };
 
-  const riskColor = getRiskColor();
+  const [riskLevel, setRiskLevel] = useState(null); //empty 
+  const [risk, setRisk] = useState("");
+    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/api/user/data');
+        const level = Number( res.data.Cluster);
+        console.log(level);
+        setRiskLevel(level);
+      } catch (err) {
+        console.error('Error fetching user data', err);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    if (riskLevel === 2) {
+      setRisk('low');
+    } else if (riskLevel === 1) {
+      setRisk('medium');
+    } else if (riskLevel === 0) {
+      setRisk('high');
+    }
+  }, [riskLevel]);
+  
+
+  const riskColor = getRiskColor(risk);
 
   return (
     <div className="risk-card">
@@ -32,7 +62,7 @@ function RiskIndicator({ riskLevel }) {
             transition: 'transform 0.2s ease-in-out',
           }}
         >
-          {riskLevel}
+          {risk}
         </div>
       </div>
 
@@ -41,24 +71,24 @@ function RiskIndicator({ riskLevel }) {
       <div className="risk-description">
         <p>
           Based on your recent health data, your risk level is{' '}
-          <strong style={{ color: riskColor }}>{riskLevel}</strong>.
+          <strong style={{ color: riskColor }}>{risk}</strong>.
         </p>
         <ul>
-          {riskLevel === 'high' && (
+          {risk === 'high' && (
             <>
               <li>Consider increasing physical activity</li>
               <li>Monitor key vitals daily</li>
               <li>Consult a health professional</li>
             </>
           )}
-          {riskLevel === 'medium' && (
+          {risk === 'medium' && (
             <>
               <li>Maintain current healthy habits</li>
               <li>Stay active and hydrated</li>
               <li>Keep monitoring trends</li>
             </>
           )}
-          {riskLevel === 'low' && (
+          {risk === 'low' && (
             <>
               <li>Excellent! Keep up the great work</li>
               <li>Maintain a balanced lifestyle</li>

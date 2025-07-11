@@ -44,6 +44,22 @@ const login = async (req, res) => {
 
         user.refreshToken = refreshToken;
 
+        const exisitingCluster = user.cluster;
+        if(!exisitingCluster){
+            const clusterResponse = await axios.post('http://127.0.0.1:5000/api/predict',{
+                "Heart_Rate": today.heartRate,
+                "Blood_Oxygen_Level": today.bloodOxygen,
+                "Sleep_Duration": today.sleepHours,
+                "Steps": today.steps,
+                "Calories_Burned": today.calories,
+                "Distance_Covered": today.distance
+            });
+    
+            const Cluster = clusterResponse.data.predicted_cluster
+            newUser.cluster = Cluster;
+            await newUser.save();
+        }
+
         const current = new Date();
         const last = new Date(user.lastUpdated);
         let diff = current - last;
@@ -76,6 +92,7 @@ const login = async (req, res) => {
             "Message": "Login Sucessful",
             "Name": user.name,
             "Email": user.email,
+            "Cluster" : user.cluster,
             threeMonthAvg: avg,
             today
         });
@@ -127,7 +144,9 @@ const signUp = async (req, res) => {
             "Distance_Covered": today.distance
         });
 
-        const Cluster = clusterResponse.data.cluster
+        const Cluster = clusterResponse.data.predicted_cluster;
+        newUser.cluster = Cluster;
+        await newUser.save();
 
         res.cookie("AccessToken", accessToken, {
             httpOnly: true,
@@ -146,9 +165,9 @@ const signUp = async (req, res) => {
             "Messsage": "Sign Up Successful",
             "Name": newUser.name,
             "Email": newUser.email,
+            "Cluster" : newUser.cluster,
             threeMonthAvg: avg,
             today,
-            Cluster
 
         });
     }
