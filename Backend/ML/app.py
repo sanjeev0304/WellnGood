@@ -1,69 +1,66 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pickle
 import numpy as np
+import pickle
 import skfuzzy as fuzz
 
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # Allow cross-origin requests if needed
 
-# Load fuzzy model parameters
+# Load model and scaler once at startup
 with open('model.pkl', 'rb') as f:
-    fuzzy_model = pickle.load(f)
+    model = pickle.load(f)
 
-centers = fuzzy_model['cntr']
-m = fuzzy_model['m']
+cntr = model['cntr']
+m = model['m']
+error = model['error']
+maxiter = model['maxiter']
+scaler = model['scaler']
 
 @app.route('/api/predict', methods=['POST'])
 def predict_cluster():
     try:
         data = request.get_json()
 
-        # Ensure all expected fields are present
-        required_fields = [
-            'Heart_Rate',
-            'Blood_Oxygen_Level',
-            'Sleep_Duration',
-            'Steps',
-            'Calories_Burned',
-            'Distance_Covered'
-        ]
-        for field in required_fields:
-            if field not in data:
-                return jsonify({'error': f'Missing field: {field}'}), 400
-
-        # Convert input data to numpy array
+        # Extract features in the correct order
         features = [
-            data['Heart_Rate'],
-            data['Blood_Oxygen_Level'],
-            data['Sleep_Duration'],
-            data['Steps'],
-            data['Calories_Burned'],
-            data['Distance_Covered']
+            data["Heart_Rate"],
+            data["Blood_Oxygen_Level"],
+            data["Sleep_Duration"],
+            data["Steps"],
+            data["Calories_Burned"],
+            data["Distance_Covered"]
         ]
-        input_array = np.array(features).reshape(1, -1)
 
-        # Make prediction deterministic (optional)
-        np.random.seed(42)
+        # Convert to 2D numpy array
+        new_data = np.array([features])
 
-        # Run fuzzy c-means prediction
-        _, u, _, _, _, _ = fuzz.cluster.cmeans_predict(
-            test_data=input_array.T,
-            cntr_trained=centers,
+        # Scale and transpose
+        new_data_scaled = scaler.transform(new_data)
+        new_data_T = new_data_scaled.T
+
+        # Predict cluster
+        result = fuzz.cluster.cmeans_predict(
+            test_data=new_data_T,
+            cntr_trained=cntr,
             m=m,
-            error=0.005,
-            maxiter=1000
+            error=error,
+            maxiter=maxiter
         )
 
-        cluster = int(np.argmax(u, axis=0)[0])
+        u = result[0] if isinstance(result, tuple) else result
+        cluster_index = int(np.argmax(u))
+        membership = u.flatten().tolist()
 
         return jsonify({
-            'cluster': cluster,
-            'memberships': u[:, 0].tolist()
+            "membership_probabilities": membership,
+            "predicted_cluster": cluster_index
         })
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 400
 
+# Run the app
 if __name__ == '__main__':
     app.run(debug=True)

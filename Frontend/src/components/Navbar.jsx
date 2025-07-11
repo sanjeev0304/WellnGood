@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import profilePic from './profile.jpg';
@@ -16,11 +17,9 @@ function Navbar() {
     };
     window.addEventListener('resize', handleResize);
 
-
     api.post('/api/auth/loginStatus', {}, { withCredentials: true })
       .then(res => {
         if (res.data.isLoggedIn) {
-
           setUser(res.data.user);
         }
       })
@@ -58,9 +57,10 @@ function Navbar() {
       padding: '0 2rem',
     },
     logo: {
-      fontSize: '1.8rem',
-      fontWeight: 700,
+      fontSize: '2.5rem',
+      fontWeight: 400,
       textDecoration: 'none',
+      fontFamily: "'EB Garamond', serif",
     },
     navLinks: {
       display: isMobile ? (isMenuOpen ? 'flex' : 'none') : 'flex',
@@ -83,8 +83,9 @@ function Navbar() {
       fontWeight: 500,
       padding: '0.5rem 1.5rem',
       borderRadius: '6px',
-      fontSize: '1.3rem',
+      fontSize: '1.2rem',
       transition: 'all 0.3s ease',
+      textTransform: 'uppercase',
     },
     navLinkHover: {
       backgroundColor: '#fff',
@@ -105,6 +106,11 @@ function Navbar() {
       margin: '4px 0',
       transition: 'transform 0.3s, opacity 0.3s',
     },
+    profileContainer: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+    },
     profileImage: {
       width: '40px',
       height: '40px',
@@ -114,8 +120,8 @@ function Navbar() {
     },
     dropdown: {
       position: 'absolute',
-      top: '60px',
-      right: '2rem',
+      top: '50px',
+      right: 0, // aligns to right of profile
       backgroundColor: '#333',
       padding: '1rem',
       borderRadius: '8px',
@@ -123,12 +129,21 @@ function Navbar() {
       display: 'flex',
       flexDirection: 'column',
       gap: '0.5rem',
+      minWidth: '120px',
+      zIndex: 999,
     },
+
     dropdownLink: {
       color: '#FFA500',
       textDecoration: 'none',
       fontWeight: 500,
       fontSize: '1rem',
+      textTransform: 'uppercase',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      textAlign: 'left',
+      padding: '0.3rem 0',
     },
   };
 
@@ -148,7 +163,7 @@ function Navbar() {
         {/* Logo */}
         <Link to="/" style={styles.logo}>
           <span style={{ color: '#FFA500' }}>Well</span>
-          <span style={{ color: '#fff' }}>n</span>
+          <span style={{ color: '#fff' }}>&</span>
           <span style={{ color: '#FFA500' }}>Good</span>
         </Link>
 
@@ -185,37 +200,33 @@ function Navbar() {
               Login
             </Link>
           ) : (
-            <div style={{ position: 'relative' }}>
+            <div
+              style={{ position: 'relative' }}
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
               <img
                 src={user.photo || profilePic}
                 alt="Profile"
                 style={styles.profileImage}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               />
               {isDropdownOpen && (
                 <div style={styles.dropdown}>
-                  {/* <Link
-                    to="/dashboard"
-                    style={styles.dropdownLink}
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Dashboard
-                  </Link> */}
                   <button
                     onClick={handleLogout}
                     style={{
-                      ...styles.dropdownLink,
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      textAlign: 'left',
+                      ...styles.navLink
                     }}
+                    onMouseEnter={(e) => handleHover(e, true)}
+                    onMouseLeave={(e) => handleHover(e, false)}
                   >
-                    Logout
+                    LOGOUT
                   </button>
                 </div>
               )}
             </div>
+
+
           )}
         </div>
 

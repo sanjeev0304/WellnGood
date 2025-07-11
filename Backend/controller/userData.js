@@ -2,6 +2,7 @@ const express = require('express');
 
 const User = require('../model/User');
 const getThreeMonthAverages = require('../utils/getThreeMonthAverages');
+const { use } = require('react');
 const userData = async (req, res) => {
 
     try {
@@ -17,7 +18,8 @@ const userData = async (req, res) => {
             avg,
             "History": user.history,
             "Name": user.name,
-            "Email": user.email
+            "Email": user.email,
+            "Cluster" : user.cluster,
         });
 
     } catch (error) {
