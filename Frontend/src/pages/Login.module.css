@@ -281,3 +281,9 @@ button:focus {
   width: 20px;
   height: 20px;
 }
+.errorMessage {
+  color: red;
+  font-size: 0.9rem;
+  margin: 8px 0;
+  text-align: left;
+}

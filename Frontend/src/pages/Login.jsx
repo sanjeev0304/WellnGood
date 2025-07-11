@@ -12,30 +12,49 @@ const Login = () => {
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '' });
   const [signinData, setSigninData] = useState({ email: '', password: '' });
 
+  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
+
   const handleSignUp = () => {
     containerRef.current.classList.add(styles.rightPanelActive);
+    setLoginError('');
+    setSignupError('');
   };
 
   const handleSignIn = () => {
     containerRef.current.classList.remove(styles.rightPanelActive);
+    setLoginError('');
+    setSignupError('');
   };
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
+    setSignupError('');
     try {
       await api.post('/api/auth/signup', signupData);
       navigate('/dashboard');
     } catch (err) {
+      if (err.response && err.response.status === 409) {
+        setSignupError('Email already exists');
+      } else {
+        setSignupError('Network error. Please try again later.');
+      }
       console.error('Signup error:', err);
     }
   };
 
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
+    setLoginError('');
     try {
       await api.post('/api/auth/login', signinData);
       navigate('/dashboard');
     } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setLoginError('Incorrect email or password');
+      } else {
+        setLoginError('Network error. Please try again later.');
+      }
       console.error('Login error:', err);
     }
   };
@@ -81,6 +100,7 @@ const Login = () => {
               onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
               required
             />
+            {signupError && <p className={styles.errorMessage}>{signupError}</p>}
             <button type="submit">Sign Up</button>
           </form>
         </div>
@@ -114,6 +134,7 @@ const Login = () => {
               onChange={(e) => setSigninData({ ...signinData, password: e.target.value })}
               required
             />
+            {loginError && <p className={styles.errorMessage}>{loginError}</p>}
             <a href="#" className={styles.forgot}>Forgot your password?</a>
             <button type="submit">Sign In</button>
           </form>
